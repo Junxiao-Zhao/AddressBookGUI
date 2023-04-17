@@ -72,7 +72,10 @@ public class SearchGUI extends JFrame {
         leftPanel.add(this.btnReset);
         leftPanel.add(this.btnCancel);
         lowPanel.add(leftPanel);
-        lowPanel.add(new JScrollPane(this.vList));
+
+        JScrollPane listPane = new JScrollPane(this.vList);
+        listPane.setColumnHeaderView(new JLabel(String.format("%-15s %-15s %-15s", "fname", "lname", "phone")));
+        lowPanel.add(listPane);
 
         JPanel panel = new JPanel(new BorderLayout(50, 20));
         panel.add(topPanel, BorderLayout.NORTH);

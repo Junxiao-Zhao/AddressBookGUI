@@ -15,9 +15,6 @@ public class MainGUI extends JFrame {
 
         Dimension btnDim = new Dimension(100, 20);
 
-        this.btnBrowse = new JButton("Browse");
-        this.btnBrowse.setMaximumSize(btnDim);
-
         // Add New
         this.btnAddNew = new JButton("Add New");
         this.btnAddNew.setMaximumSize(btnDim);
@@ -37,6 +34,17 @@ public class MainGUI extends JFrame {
                 dispose(); // Close this window
                 SearchGUI srchGUI = new SearchGUI(addressBook);
                 srchGUI.setVisible(true);
+            }
+        });
+
+        // Browse
+        this.btnBrowse = new JButton("Browse");
+        this.btnBrowse.setMaximumSize(btnDim);
+        this.btnBrowse.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close this window
+                BrowseGUI brwGUI = new BrowseGUI(addressBook);
+                brwGUI.setVisible(true);
             }
         });
 
