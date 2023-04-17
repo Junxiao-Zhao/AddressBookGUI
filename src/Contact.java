@@ -30,6 +30,6 @@ public class Contact {
 
     @Override
     public String toString() {
-        return String.format("%-15s %-15s %-15s", this.fname, this, lname, this.phone);
+        return String.format("%-15s %-15s %-15s", this.fname, this.lname, this.phone);
     }
 }

@@ -13,11 +13,9 @@ public class MainGUI extends JFrame {
 
         this.addressBook = ab;
 
-        this.btnSearch = new JButton("Search");
-        this.btnBrowse = new JButton("Browse");
         Dimension btnDim = new Dimension(100, 20);
 
-        this.btnSearch.setMaximumSize(btnDim);
+        this.btnBrowse = new JButton("Browse");
         this.btnBrowse.setMaximumSize(btnDim);
 
         // Add New
@@ -28,6 +26,17 @@ public class MainGUI extends JFrame {
                 dispose(); // Close this window
                 AddNewContactGUI addGUI = new AddNewContactGUI(addressBook);
                 addGUI.setVisible(true);
+            }
+        });
+
+        // Search
+        this.btnSearch = new JButton("Search");
+        this.btnSearch.setMaximumSize(btnDim);
+        this.btnSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close this window
+                SearchGUI srchGUI = new SearchGUI(addressBook);
+                srchGUI.setVisible(true);
             }
         });
 
