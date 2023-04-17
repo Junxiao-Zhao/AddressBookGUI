@@ -15,18 +15,15 @@ public class SearchGUI extends JFrame {
     SearchGUI(List<Contact> ab) {
         this.addressBook = ab;
         this.txtSearch = new JTextField();
-        // this.txtSearch.setPreferredSize(getPreferredSize());
-        txtSearch.setColumns(20);
 
         DefaultListModel<Contact> listModel = new DefaultListModel<>();
         this.vList = new JList<>(listModel);
-        // this.vList.setMaximumSize(new Dimension(50, 500));
 
-        Dimension btnDim = new Dimension(100, 30);
+        // Dimension btnDim = new Dimension(10, 20);
 
         // Search
         this.btnSearch = new JButton("Search");
-        this.btnSearch.setMaximumSize(btnDim);
+        // this.btnSearch.setMaximumSize(btnDim);
         this.btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 listModel.clear();
@@ -47,7 +44,7 @@ public class SearchGUI extends JFrame {
 
         // Reset
         this.btnReset = new JButton("Reset");
-        this.btnReset.setMaximumSize(btnDim);
+        // this.btnReset.setMaximumSize(btnDim);
         this.btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 txtSearch.setText("");
@@ -57,7 +54,7 @@ public class SearchGUI extends JFrame {
 
         // Cancel
         this.btnCancel = new JButton("Cancel");
-        this.btnCancel.setMaximumSize(btnDim);
+        // this.btnCancel.setMaximumSize(btnDim);
         this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -66,26 +63,20 @@ public class SearchGUI extends JFrame {
             }
         });
 
-        JPanel btnPanel = new JPanel();
-        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
-        btnPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0));
-        Dimension whiteSpace = new Dimension(20, 20);
-        btnPanel.add(this.btnSearch);
-        btnPanel.add(Box.createRigidArea(whiteSpace));
-        btnPanel.add(this.btnReset);
-        btnPanel.add(Box.createRigidArea(whiteSpace));
-        btnPanel.add(this.btnCancel);
+        JPanel topPanel = new JPanel(new GridLayout(1, 2, 20, 20));
+        topPanel.add(this.btnSearch);
+        topPanel.add(this.txtSearch);
 
-        JPanel txtPanel = new JPanel();
+        JPanel lowPanel = new JPanel(new GridLayout(1, 2, 20, 20));
+        JPanel leftPanel = new JPanel(new GridLayout(3, 1, 20, 20));
+        leftPanel.add(this.btnReset);
+        leftPanel.add(this.btnCancel);
+        lowPanel.add(leftPanel);
+        lowPanel.add(new JScrollPane(this.vList));
 
-        txtPanel.setLayout(new GridLayout(5, 1, 10, 20));
-        txtPanel.add(Box.createRigidArea(whiteSpace));
-        txtPanel.add(this.txtSearch);
-        txtPanel.add(this.vList);
-
-        JPanel panel = new JPanel(new BorderLayout(20, 20));
-        panel.add(btnPanel, BorderLayout.WEST);
-        panel.add(txtPanel, BorderLayout.EAST);
+        JPanel panel = new JPanel(new BorderLayout(50, 20));
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(lowPanel, BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         this.getContentPane().add(panel, BorderLayout.CENTER);
