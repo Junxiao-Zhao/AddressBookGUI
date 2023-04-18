@@ -18,8 +18,7 @@ public class BrowseGUI extends JFrame {
         this.selectedIndex = -1;
 
         DefaultListModel<Contact> listModel = new DefaultListModel<>();
-        for (Contact c : addressBook)
-            listModel.addElement(c);
+        this.addContacts(listModel);
         this.vList = new JList<>(listModel);
 
         // Select
@@ -69,5 +68,10 @@ public class BrowseGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationByPlatform(true);
         this.pack();
+    }
+
+    public void addContacts(DefaultListModel<Contact> listModel) {
+        for (Contact c : addressBook)
+            listModel.addElement(c);
     }
 }
