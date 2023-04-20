@@ -1,50 +1,44 @@
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class SearchGUI extends JFrame {
 
+    private static SearchGUI instance;
     private JTextField txtSearch;
     private JButton btnSearch;
     private JButton btnReset;
     private JButton btnCancel;
     private JList<Contact> vList;
-    private List<Contact> addressBook;
+    private AddressBook addressBook;
 
-    SearchGUI(List<Contact> ab) {
-        this.addressBook = ab;
+    private SearchGUI() {
+        this.addressBook = AddressBook.getInstance();
         this.txtSearch = new JTextField();
 
         DefaultListModel<Contact> listModel = new DefaultListModel<>();
         this.vList = new JList<>(listModel);
 
-        // Dimension btnDim = new Dimension(10, 20);
-
         // Search
         this.btnSearch = new JButton("Search");
-        // this.btnSearch.setMaximumSize(btnDim);
         this.btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 listModel.clear();
                 String target = txtSearch.getText();
+                List<Contact> matched = search(target);
 
-                if (target.equals(""))
+                if (matched == null)
                     return;
 
-                for (Contact c : addressBook) {
-                    String cname = c.getName();
-
-                    if (cname.toLowerCase().contains(target.toLowerCase())) {
-                        listModel.addElement(c);
-                    }
-                }
+                for (Contact c : matched)
+                    listModel.addElement(c);
             }
         });
 
         // Reset
         this.btnReset = new JButton("Reset");
-        // this.btnReset.setMaximumSize(btnDim);
         this.btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 txtSearch.setText("");
@@ -54,12 +48,10 @@ public class SearchGUI extends JFrame {
 
         // Cancel
         this.btnCancel = new JButton("Cancel");
-        // this.btnCancel.setMaximumSize(btnDim);
         this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                MainGUI mg = new MainGUI(addressBook);
-                mg.setVisible(true);
+                SearchGUI.getInstance().setVisible(false);
+                MainGUI.getInstance().setVisible(true);
             }
         });
 
@@ -86,5 +78,22 @@ public class SearchGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationByPlatform(true);
         this.pack();
+    }
+
+    public static SearchGUI getInstance() {
+
+        if (instance == null)
+            instance = new SearchGUI();
+
+        return instance;
+    }
+
+    private List<Contact> search(String target) {
+
+        if (target.equals(""))
+            return null;
+
+        return this.addressBook.matchName(target);
+
     }
 }

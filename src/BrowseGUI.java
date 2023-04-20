@@ -1,43 +1,39 @@
-import java.util.List;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class BrowseGUI extends JFrame {
 
+    private static BrowseGUI instance;
     private JButton btnDelete;
     private JButton btnClose;
     private JList<Contact> vList;
-    private List<Contact> addressBook;
-    private int selectedIndex;
+    private DefaultListModel<Contact> listModel;
+    private AddressBook addressBook;
 
-    BrowseGUI(List<Contact> ab) {
-        this.addressBook = ab;
-        this.selectedIndex = -1;
+    private BrowseGUI() {
+        this.addressBook = AddressBook.getInstance();
 
-        DefaultListModel<Contact> listModel = new DefaultListModel<>();
-        this.addContacts(listModel);
+        // Get contacts
+
+        this.listModel = new DefaultListModel<>();
         this.vList = new JList<>(listModel);
 
-        // Select
-        this.vList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    selectedIndex = vList.getSelectedIndex();
-                }
-            }
-        });
+        for (Contact c : addressBook.getContacts()) {
+            listModel.addElement(c);
+        }
 
         // Delete
         this.btnDelete = new JButton("Delete");
         this.btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                int selectedIndex = vList.getSelectedIndex();
+
                 if (selectedIndex >= 0 && selectedIndex < addressBook.size()) {
-                    addressBook.remove(selectedIndex);
+                    delete(selectedIndex);
                     listModel.remove(selectedIndex);
+                    // update();
                 }
             }
         });
@@ -46,9 +42,8 @@ public class BrowseGUI extends JFrame {
         this.btnClose = new JButton("Close");
         this.btnClose.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                MainGUI mg = new MainGUI(addressBook);
-                mg.setVisible(true);
+                BrowseGUI.getInstance().setVisible(false);
+                MainGUI.getInstance().setVisible(true);
             }
         });
 
@@ -70,8 +65,31 @@ public class BrowseGUI extends JFrame {
         this.pack();
     }
 
-    public void addContacts(DefaultListModel<Contact> listModel) {
-        for (Contact c : addressBook)
-            listModel.addElement(c);
+    public static BrowseGUI getInstance() {
+
+        if (instance == null)
+            instance = new BrowseGUI();
+
+        instance.update();
+
+        return instance;
+    }
+
+    public void update() {
+
+        // this.listModel.clear();
+
+        List<Contact> contacts = AddressBook.getInstance().getContacts();
+        int index = this.listModel.getSize();
+
+        for (int i = index; i < contacts.size(); i++) {
+            this.listModel.addElement(contacts.get(i));
+        }
+    }
+
+    private void delete(int selectedIndex) {
+
+        this.addressBook.remove(selectedIndex);
+        FileManager.getInstance().write(this.addressBook);
     }
 }

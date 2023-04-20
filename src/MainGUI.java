@@ -1,17 +1,15 @@
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class MainGUI extends JFrame {
+
+    private static MainGUI instance;
     private JButton btnAddNew;
     private JButton btnSearch;
     private JButton btnBrowse;
-    private List<Contact> addressBook;
 
-    MainGUI(List<Contact> ab) {
-
-        this.addressBook = ab;
+    private MainGUI() {
 
         Dimension btnDim = new Dimension(100, 20);
 
@@ -20,9 +18,7 @@ public class MainGUI extends JFrame {
         this.btnAddNew.setMaximumSize(btnDim);
         this.btnAddNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close this window
-                AddNewContactGUI addGUI = new AddNewContactGUI(addressBook);
-                addGUI.setVisible(true);
+                addNew();
             }
         });
 
@@ -31,9 +27,7 @@ public class MainGUI extends JFrame {
         this.btnSearch.setMaximumSize(btnDim);
         this.btnSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close this window
-                SearchGUI srchGUI = new SearchGUI(addressBook);
-                srchGUI.setVisible(true);
+                search();
             }
         });
 
@@ -42,9 +36,7 @@ public class MainGUI extends JFrame {
         this.btnBrowse.setMaximumSize(btnDim);
         this.btnBrowse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Close this window
-                BrowseGUI brwGUI = new BrowseGUI(addressBook);
-                brwGUI.setVisible(true);
+                browse();
             }
         });
 
@@ -63,5 +55,28 @@ public class MainGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationByPlatform(true);
         this.pack();
+    }
+
+    public static MainGUI getInstance() {
+
+        if (instance == null)
+            instance = new MainGUI();
+
+        return instance;
+    }
+
+    public void addNew() {
+        MainGUI.getInstance().setVisible(false);
+        AddNewContactGUI.getInstance().setVisible(true);
+    }
+
+    public void search() {
+        MainGUI.getInstance().setVisible(false);
+        SearchGUI.getInstance().setVisible(true);
+    }
+
+    public void browse() {
+        MainGUI.getInstance().setVisible(false);
+        BrowseGUI.getInstance().setVisible(true);
     }
 }

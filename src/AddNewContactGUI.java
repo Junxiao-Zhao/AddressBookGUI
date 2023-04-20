@@ -1,20 +1,21 @@
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class AddNewContactGUI extends JFrame {
+
+    private static AddNewContactGUI instance;
     private JTextField txtFName;
     private JTextField txtLName;
     private JTextField txtPhone;
     private JButton btnSave;
     private JButton btnReset;
     private JButton btnCancel;
-    private List<Contact> addressBook;
+    private AddressBook addressBook;
 
-    AddNewContactGUI(List<Contact> ab) {
+    private AddNewContactGUI() {
 
-        this.addressBook = ab;
+        this.addressBook = AddressBook.getInstance();
 
         Dimension labelDim = new Dimension(100, 20);
 
@@ -58,8 +59,7 @@ public class AddNewContactGUI extends JFrame {
                 String fname = txtFName.getText();
                 String lname = txtLName.getText();
                 String phone = txtPhone.getText();
-                Contact c = new Contact(fname, lname, phone);
-                addressBook.add(c);
+                save(fname, lname, phone);
             }
         });
 
@@ -79,9 +79,8 @@ public class AddNewContactGUI extends JFrame {
         this.btnCancel.setMaximumSize(btnDim);
         this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                MainGUI mg = new MainGUI(addressBook);
-                mg.setVisible(true);
+                AddNewContactGUI.getInstance().setVisible(false);
+                MainGUI.getInstance().setVisible(true);
             }
         });
 
@@ -96,5 +95,23 @@ public class AddNewContactGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationByPlatform(true);
         this.pack();
+    }
+
+    public static AddNewContactGUI getInstance() {
+
+        if (instance == null)
+            instance = new AddNewContactGUI();
+
+        return instance;
+    }
+
+    private void save(String fname, String lname, String phone) {
+
+        if (fname.equals("") && lname.equals("") && phone.equals(""))
+            return;
+
+        Contact c = new Contact(fname, lname, phone);
+        this.addressBook.add(c);
+        FileManager.getInstance().write(this.addressBook);
     }
 }
