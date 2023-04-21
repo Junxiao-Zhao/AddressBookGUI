@@ -45,6 +45,10 @@ public class AddressBook {
         this.addressBook.add(c);
     }
 
+    public void addContact(String f, String l, String p) {
+        this.addressBook.add(new Contact(f, l, p));
+    }
+
     public void remove(int index) {
         this.addressBook.remove(index);
     }

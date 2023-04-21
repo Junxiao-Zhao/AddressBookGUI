@@ -42,8 +42,7 @@ public class BrowseGUI extends JFrame {
         this.btnClose = new JButton("Close");
         this.btnClose.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                BrowseGUI.getInstance().setVisible(false);
-                MainGUI.getInstance().setVisible(true);
+                close();
             }
         });
 
@@ -75,11 +74,9 @@ public class BrowseGUI extends JFrame {
         return instance;
     }
 
-    public void update() {
+    private void update() {
 
-        // this.listModel.clear();
-
-        List<Contact> contacts = AddressBook.getInstance().getContacts();
+        List<Contact> contacts = this.addressBook.getContacts();
         int index = this.listModel.getSize();
 
         for (int i = index; i < contacts.size(); i++) {
@@ -91,5 +88,10 @@ public class BrowseGUI extends JFrame {
 
         this.addressBook.remove(selectedIndex);
         FileManager.getInstance().write(this.addressBook);
+    }
+
+    private void close() {
+        BrowseGUI.getInstance().setVisible(false);
+        MainGUI.getInstance().setVisible(true);
     }
 }

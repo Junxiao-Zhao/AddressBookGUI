@@ -5,13 +5,13 @@ public class Contact implements Serializable {
     private String lname;
     private String phone;
 
-    // Getters
     public Contact(String f, String l, String p) {
         this.fname = f;
         this.lname = l;
         this.phone = p;
     }
 
+    // Getters
     public String getName() {
         return this.fname + " " + this.lname;
     }

@@ -41,8 +41,7 @@ public class SearchGUI extends JFrame {
         this.btnReset = new JButton("Reset");
         this.btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                txtSearch.setText("");
-                listModel.clear();
+                reset();
             }
         });
 
@@ -50,8 +49,8 @@ public class SearchGUI extends JFrame {
         this.btnCancel = new JButton("Cancel");
         this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SearchGUI.getInstance().setVisible(false);
-                MainGUI.getInstance().setVisible(true);
+                cancel();
+                listModel.clear();
             }
         });
 
@@ -94,6 +93,14 @@ public class SearchGUI extends JFrame {
             return null;
 
         return this.addressBook.matchName(target);
+    }
 
+    private void reset() {
+        txtSearch.setText("");
+    }
+
+    private void cancel() {
+        SearchGUI.getInstance().setVisible(false);
+        MainGUI.getInstance().setVisible(true);
     }
 }

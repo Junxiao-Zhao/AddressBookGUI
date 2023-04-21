@@ -68,9 +68,7 @@ public class AddNewContactGUI extends JFrame {
         this.btnReset.setMaximumSize(btnDim);
         this.btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                txtFName.setText("");
-                txtLName.setText("");
-                txtPhone.setText("");
+                reset();
             }
         });
 
@@ -79,8 +77,7 @@ public class AddNewContactGUI extends JFrame {
         this.btnCancel.setMaximumSize(btnDim);
         this.btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddNewContactGUI.getInstance().setVisible(false);
-                MainGUI.getInstance().setVisible(true);
+                cancel();
             }
         });
 
@@ -110,8 +107,18 @@ public class AddNewContactGUI extends JFrame {
         if (fname.equals("") && lname.equals("") && phone.equals(""))
             return;
 
-        Contact c = new Contact(fname, lname, phone);
-        this.addressBook.add(c);
+        this.addressBook.addContact(fname, lname, phone);
         FileManager.getInstance().write(this.addressBook);
+    }
+
+    private void reset() {
+        this.txtFName.setText("");
+        this.txtLName.setText("");
+        this.txtPhone.setText("");
+    }
+
+    private void cancel() {
+        AddNewContactGUI.getInstance().setVisible(false);
+        MainGUI.getInstance().setVisible(true);
     }
 }
