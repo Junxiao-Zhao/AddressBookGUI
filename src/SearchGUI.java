@@ -42,6 +42,7 @@ public class SearchGUI extends JFrame {
         this.btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 reset();
+                listModel.clear();
             }
         });
 
